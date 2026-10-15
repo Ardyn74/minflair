@@ -26,8 +26,9 @@ esac
 
 if [ "$1" = "mic-mute" ]; then
   MIC_INFO=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
+  MIC_VOL=$(echo "$MIC_INFO" | awk '{printf "%.0f", $2 * 100}')
   MIC_MUTED=$(echo "$MIC_INFO" | grep -q "MUTED" && echo "true" || echo "false")
-  qs ipc call osd showMic "$MIC_MUTED" 2>/dev/null || true
+  qs ipc call osd showMic "$MIC_VOL" "$MIC_MUTED" 2>/dev/null || true
   exit 0
 fi
 

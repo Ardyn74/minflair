@@ -41,8 +41,8 @@ ShellRoot {
             OsdService.displayVolume(volume, isMuted);
         }
 
-        function showMic(isMuted: string) {
-            OsdService.displayMic(isMuted);
+        function showMic(volume: string, isMuted: string) {
+            OsdService.displayMic(volume, isMuted);
         }
 
         function showBrightness(percent: string) {

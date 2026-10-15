@@ -71,15 +71,28 @@ Item {
         osdService.trigger("Volume", text, muted ? 0 : (vol / 100), iconName, muted);
     }
 
-    function displayMic(isMuted) {
+    function displayMic(volume, isMuted) {
+        if (isMuted === undefined && (typeof volume === "boolean" || volume === "true" || volume === "false" || volume === "yes" || volume === "no" || volume === "1" || volume === "0")) {
+            isMuted = volume;
+            volume = undefined;
+        }
+        let vol = 0;
+        if (volume !== undefined && volume !== null && volume !== "") {
+            vol = parseInt(volume);
+            if (isNaN(vol))
+                vol = AudioService.micVolume;
+
+        } else {
+            vol = AudioService.micVolume;
+        }
         let muted = false;
         if (isMuted !== undefined && isMuted !== null && isMuted !== "")
             muted = (isMuted === true || isMuted === "true" || isMuted === "yes" || isMuted === "1");
         else
             muted = AudioService.micMuted;
-        let iconName = muted ? "microphone-off" : "microphone";
-        let text = muted ? "Muted" : "Active";
-        osdService.trigger("Microphone", text, muted ? 0 : 1, iconName, muted);
+        let iconName = (muted || vol === 0) ? "microphone-off" : "microphone";
+        let text = muted ? "Muted" : (vol + "%");
+        osdService.trigger("Microphone", text, muted ? 0 : (vol / 100), iconName, muted);
     }
 
     function displayBrightness(percent) {
