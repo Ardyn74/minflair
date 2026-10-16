@@ -92,4 +92,24 @@ AppContainer {
 
     }
 
+    AppGroup {
+        title: "Workspaces"
+        icon: "slider"
+
+        SettingSpinBox {
+            label: "Number of Workspaces"
+            description: "Set the total number of workspaces shown on the bar"
+            value: SettingsService.numberOfWorkspaces
+            from: 1
+            to: 20
+            stepSize: 1
+            decimals: 0
+            suffix: ""
+            onMoved: (val) => {
+                SettingsService.numberOfWorkspaces = val;
+            }
+        }
+
+    }
+
 }

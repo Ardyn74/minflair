@@ -50,7 +50,7 @@ Item {
         }
         return maxId;
     }
-    readonly property int visibleWorkspaceCount: Math.min(10, Math.max(Math.max(activeWsId, maxOccupiedWsId) + 1, 5))
+    readonly property int visibleWorkspaceCount: Math.min(SettingsService.numberOfWorkspaces, Math.max(Math.max(activeWsId, maxOccupiedWsId) + 1, 5))
 
     function handleWheel(wheel) {
         const currentId = Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id : 1;
@@ -102,7 +102,7 @@ Item {
         spacing: root.compact ? 5 : 6
 
         Repeater {
-            model: 10
+            model: SettingsService.numberOfWorkspaces
 
             Item {
                 id: wsSlot

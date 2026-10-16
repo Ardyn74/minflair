@@ -30,6 +30,7 @@ Item {
     property bool barConvexMode: barStyle === "convex"
     property string islandRightMode: "auto"
     readonly property int barWidgetHeight: 28
+    property int numberOfWorkspaces: 10
 
     function saveSettings() {
         saveTimer.restart();
@@ -149,6 +150,11 @@ Item {
             saveSettings();
 
     }
+    onNumberOfWorkspacesChanged: {
+        if (settingsLoaded)
+            saveSettings();
+
+    }
 
     Timer {
         id: saveTimer
@@ -195,7 +201,8 @@ Item {
                 "cursorTheme": settingsService.cursorTheme,
                 "cursorSize": settingsService.cursorSize,
                 "barStyle": settingsService.barStyle,
-                "islandRightMode": settingsService.islandRightMode
+                "islandRightMode": settingsService.islandRightMode,
+                "numberOfWorkspaces": settingsService.numberOfWorkspaces
             };
             settingsSaver.running = false;
             settingsSaver.command = ["sh", "-c", "mkdir -p ~/.cache/quickshell /var/tmp/sddm-theme && cat << 'EOF' > ~/.cache/quickshell/settings_prefs.json.tmp
@@ -342,6 +349,9 @@ cp ~/.cache/quickshell/settings_prefs.json /var/tmp/sddm-theme/settings_prefs.js
                         }
                         if (prefs.islandRightMode !== undefined)
                             settingsService.islandRightMode = prefs.islandRightMode;
+
+                        if (prefs.numberOfWorkspaces !== undefined)
+                            settingsService.numberOfWorkspaces = prefs.numberOfWorkspaces;
 
                     } catch (e) {
                         console.error("Error loading settings: " + e);

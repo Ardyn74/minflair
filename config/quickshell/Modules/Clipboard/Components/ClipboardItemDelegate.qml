@@ -49,7 +49,7 @@ Item {
         RowLayout {
             anchors.fill: parent
             anchors.leftMargin: Constants.sizeLg
-            anchors.rightMargin: Constants.sizeLg
+            anchors.rightMargin: Constants.sizeXs
             spacing: Constants.sizeLg
 
             ThemedText {
