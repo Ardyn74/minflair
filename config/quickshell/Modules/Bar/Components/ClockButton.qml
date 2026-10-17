@@ -7,11 +7,25 @@ import qs.Core.Services
 Rectangle {
     id: root
 
+    property bool isHovered: mouseArea.containsMouse
+    property bool isPressed: mouseArea.pressed
+
     color: "transparent"
     implicitWidth: mainLayout.implicitWidth
     implicitHeight: mainLayout.implicitHeight
     width: implicitWidth
     height: implicitHeight
+    scale: DisplayProfileService.gameModeActive ? 1 : (isPressed ? 0.95 : (isHovered ? 1.02 : 1))
+
+    MouseArea {
+        id: mouseArea
+
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        acceptedButtons: Qt.LeftButton
+        onClicked: AppState.toggleWidget("calendar")
+    }
 
     RowLayout {
         id: mainLayout
@@ -142,6 +156,14 @@ Rectangle {
 
             }
 
+        }
+
+    }
+
+    Behavior on scale {
+        NumberAnimation {
+            duration: Constants.animFast
+            easing.type: Easing.OutBack
         }
 
     }

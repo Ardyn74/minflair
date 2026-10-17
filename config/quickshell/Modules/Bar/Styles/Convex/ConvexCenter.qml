@@ -25,8 +25,8 @@ Item {
     property real notifProgress: (hasActiveNotifications && !notifLayer.isRemovingNotif) ? 1 : 0
     readonly property bool hasActiveOsd: OsdService.isOpen && !hasActiveNotifications && !isOpen
     property real osdProgress: hasActiveOsd ? 1 : 0
-    readonly property bool isCenterExpanded: SettingsService.barConvexMode && AppState.isWidgetOpen("music")
-    readonly property string activeContentType: AppState.isWidgetOpen("music") ? "music" : ""
+    readonly property bool isCenterExpanded: SettingsService.barConvexMode && (AppState.isWidgetOpen("music") || AppState.isWidgetOpen("calendar"))
+    readonly property string activeContentType: AppState.isWidgetOpen("music") ? "music" : (AppState.isWidgetOpen("calendar") ? "calendar" : "")
     property bool isOpen: false
     property bool isClosing: false
     property real openProgress: 0
@@ -118,6 +118,9 @@ Item {
             AppState.isConvexOpen = false;
             if (AppState.isWidgetOpen("music"))
                 AppState.closeWidget("music");
+
+            if (AppState.isWidgetOpen("calendar"))
+                AppState.closeWidget("calendar");
 
         }
     }
