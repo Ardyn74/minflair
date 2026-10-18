@@ -5,8 +5,6 @@ import qs.Core
 import qs.Core.Components
 import qs.Core.Services
 
-// Konten kalender. Sama seperti MiniMusicWidget: cuma Item tanpa window/background,
-// wadahnya (Convex panel) yang ngurus posisi dan background.
 Item {
     id: root
 
@@ -39,7 +37,6 @@ Item {
         viewYear = d.getFullYear();
     }
 
-    // Balik ke bulan ini tiap kali widget ditutup
     onIsVisibleOnScreenChanged: {
         if (!isVisibleOnScreen)
             goToToday();
@@ -50,7 +47,6 @@ Item {
     width: implicitWidth
     height: implicitHeight
 
-    // Scroll mouse = ganti bulan
     WheelHandler {
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
         onWheel: (event) => {
@@ -64,7 +60,6 @@ Item {
         anchors.fill: parent
         spacing: Constants.sizeMd
 
-        // HEADER: bulan + tahun, tombol prev/next
         RowLayout {
             Layout.fillWidth: true
             spacing: Constants.sizeSm
@@ -95,7 +90,6 @@ Item {
 
             }
 
-            // Klik judul = balik ke bulan ini
             Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: Constants.size2Xl
@@ -145,7 +139,6 @@ Item {
 
         }
 
-        // NAMA HARI
         DayOfWeekRow {
             Layout.fillWidth: true
             locale: Qt.locale()
@@ -159,7 +152,6 @@ Item {
 
         }
 
-        // GRID TANGGAL
         MonthGrid {
             id: grid
 

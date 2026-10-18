@@ -1,59 +1,63 @@
 import os
 import subprocess
 
-from color_utils import sanitize_color
+from color_utils import sanitize_color, rgb_to_hsl, force_hsl
+
+HUE_SPREAD = 0
+
+
+def tone(accent_hex, hue_shift, light, min_sat=0.35):
+    r, g, b = (int(accent_hex[i:i + 2], 16) for i in (1, 3, 5))
+    h, s, _ = rgb_to_hsl(r, g, b)
+    return force_hsl((h + hue_shift) % 360, s, light, min_sat, light)
 
 
 def apply(home, colors):
-    bg = colors["bg"]
-    fg = colors["fg"]
-    accent = colors["accent"]
-    accentComplementary = colors["accentComplementary"]
-    muted = colors["muted"]
-    border = colors["border"]
-    bgSecondary = colors["bgSecondary"]
-    bgTertiary = colors.get("bgTertiary", bgSecondary)
-    bgAccent = colors.get("bgAccent", accent)
-    bgAccentComplementary = colors.get("bgAccentComplementary", accentComplementary)
-    overlayBase = colors.get("overlayBase", accent)
+    bg = sanitize_color(colors["bg"])
+    fg = sanitize_color(colors["fg"])
+    accent = sanitize_color(colors["accent"])
+    comp = sanitize_color(colors["accentComplementary"])
+    muted = sanitize_color(colors["muted"])
+    border = sanitize_color(colors["border"])
+    bgSecondary = sanitize_color(colors["bgSecondary"])
 
-    kitty_theme = f"""foreground              {sanitize_color(fg)}
-background              {sanitize_color(bg)}
-selection_foreground    {sanitize_color(bg)}
-selection_background    {sanitize_color(accent)}
-cursor                  {sanitize_color(fg)}
-cursor_text_color       {sanitize_color(bg)}
-url_color               {sanitize_color(accentComplementary)}
-active_border_color     {sanitize_color(accent)}
-inactive_border_color   {sanitize_color(border)}
-bell_border_color       {sanitize_color(accentComplementary)}
-active_tab_foreground   {sanitize_color(bg)}
-active_tab_background   {sanitize_color(accent)}
-inactive_tab_foreground {sanitize_color(muted)}
-inactive_tab_background {sanitize_color(bgSecondary)}
-tab_bar_background      {sanitize_color(bg)}
-color0  {sanitize_color(accent)}
-color8  {sanitize_color(accent)}
-color1  {sanitize_color(accent)}
-color9  {sanitize_color(accent)}
-color2  {sanitize_color(accent)}
-color10 {sanitize_color(accent)}
-color3  {sanitize_color(accent)}
-color11 {sanitize_color(accent)}
-color4  {sanitize_color(accent)}
-color12 {sanitize_color(accent)}
-color5  {sanitize_color(accent)}
-color13 {sanitize_color(accent)}
-color6  {sanitize_color(accent)}
-color14 {sanitize_color(accent)}
-color7  {sanitize_color(accent)}
-color15 {sanitize_color(accent)}
-color16 {sanitize_color(accent)}
-color17 {sanitize_color(accent)}
-color18 {sanitize_color(accent)}
-color19 {sanitize_color(accent)}
-color20 {sanitize_color(accent)}
-color21 {sanitize_color(accent)}
+    sp = HUE_SPREAD
+    ansi = {
+        0: bgSecondary,            
+        1: tone(accent, 0, 0.62),
+        2: tone(accent, sp, 0.58),
+        3: tone(accent, sp * 2, 0.68),
+        4: tone(accent, -sp, 0.60),
+        5: tone(accent, -sp * 2, 0.64),
+        6: tone(accent, sp // 2, 0.70),
+        7: fg,
+        8: muted,
+        9: tone(accent, 0, 0.74),
+        10: tone(accent, sp, 0.70),
+        11: tone(accent, sp * 2, 0.78),
+        12: tone(accent, -sp, 0.72),
+        13: tone(accent, -sp * 2, 0.76),
+        14: tone(accent, sp // 2, 0.80),
+        15: fg,
+    }
+    ansi_lines = "\n".join(f"color{i:<2} {c}" for i, c in ansi.items())
+
+    kitty_theme = f"""foreground              {fg}
+background              {bg}
+selection_foreground    {bg}
+selection_background    {accent}
+cursor                  {fg}
+cursor_text_color       {bg}
+url_color               {accent}
+active_border_color     {accent}
+inactive_border_color   {border}
+bell_border_color       {accent}
+active_tab_foreground   {bg}
+active_tab_background   {accent}
+inactive_tab_foreground {muted}
+inactive_tab_background {bgSecondary}
+tab_bar_background      {bg}
+{ansi_lines}
 """
     kitty_dir = os.path.join(home, ".config", "kitty")
     os.makedirs(kitty_dir, exist_ok=True)
