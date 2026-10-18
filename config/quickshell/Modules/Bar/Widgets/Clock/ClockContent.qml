@@ -124,7 +124,7 @@ Item {
 
         }
 
-        // Pemisah antara jam dan kalender
+        // Separator between the clock and the calendar
         Rectangle {
             Layout.fillWidth: true
             Layout.topMargin: Constants.sizeXs
@@ -132,7 +132,7 @@ Item {
             color: Theme.bgSecondary
         }
 
-        // Kalender bulanan
+        // Calender
         CalendarModule.CalendarWidget {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: Constants.sizeXs
