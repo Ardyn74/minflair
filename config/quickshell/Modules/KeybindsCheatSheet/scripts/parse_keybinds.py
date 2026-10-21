@@ -30,6 +30,9 @@ KEY_MAP = {
     "XF86AudioNext": "Next",
     "XF86AudioPrev": "Prev",
     "XF86AudioStop": "Stop",
+    "comma": ",",
+    "period": ".",
+    "backslash": "\\",
 }
 
 MOD_MAP = {

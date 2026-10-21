@@ -8,7 +8,7 @@ hl.config({
 		["col.active_border"] = colors.accent_alpha,
 		["col.inactive_border"] = colors.border_alpha,
 		allow_tearing = false,
-		layout = "dwindle",
+		layout = "scrolling",
 	},
 	group = {
 		groupbar = {
@@ -53,8 +53,11 @@ hl.config({
 			color = colors.shadow,
 		},
 	},
-	dwindle = {
-		preserve_split = true,
+	scrolling = {
+		column_width = 0.5,
+		direction = "right",
+		follow_focus = true,
+		focus_fit_method = 0,
 	},
 	master = {
 		new_status = "master",

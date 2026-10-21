@@ -34,8 +34,18 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", action
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 -- # Pseudo Tiling Layout
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
--- # Toggle Split Direction
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+-- # Promote Window to Column
+hl.bind(mainMod .. " + J", hl.dsp.layout("promote"))
+-- # Center Focused Column
+hl.bind(mainMod .. " + backslash", hl.dsp.layout("center"))
+-- # Scroll Column Left
+hl.bind(mainMod .. " + comma", hl.dsp.layout("move -col"))
+-- # Scroll Column Right
+hl.bind(mainMod .. " + period", hl.dsp.layout("move +col"))
+-- # Swap Column Left
+hl.bind(mainMod .. " + SHIFT + comma", hl.dsp.layout("swapcol l"))
+-- # Swap Column Right
+hl.bind(mainMod .. " + SHIFT + period", hl.dsp.layout("swapcol r"))
 -- # Center Floating Window
 hl.bind(mainMod .. " + C", hl.dsp.window.center())
 -- # Pin Window on All Workspaces
